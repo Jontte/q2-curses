@@ -1,0 +1,109 @@
+package q2;
+
+message RemoteCommand {
+  enum Type {
+    /* Remote control */
+    AttachSession = 1;
+    /* Session */
+    GetNetworkList = 100;
+    /* Network */
+    Connect = 200;
+    Register = 201;
+    JoinChannel = 202;
+    SendPrivmsg = 203;
+    GetBufferList = 204;
+  };
+
+  required Type packet_type = 1;
+
+  optional uint64 network_id = 2;
+  optional uint64 buffer_id = 3;
+
+  optional AttachSessionT attach_session = 4;
+  optional ConnectT connect = 5;
+  optional RegisterT register = 6;
+  optional JoinChannelT join_channel = 7;
+  optional SendPrivmsgT send_privmsg = 8;
+}
+
+message AttachSessionT {
+  required uint64 session_id = 1;
+}
+
+message ConnectT {
+  required string address = 2;
+}
+
+message RegisterT {
+  required string nickname = 2;
+}
+
+message JoinChannelT {
+  required string channel = 2;
+}
+
+message SendPrivmsgT {
+  required string target = 2;
+  required string msg = 3;
+}
+
+message RemoteMessage {
+  enum Type {
+    /* Remote control */
+    /* Session */
+    NetworkList = 100;
+    /* Network */
+    Connected = 201;
+    Disconnected = 202;
+    BufferList = 203;
+    NewBuffer = 204;
+    /* Buffer */
+    Information = 205;
+  };
+
+  required Type packet_type = 1;
+
+  optional uint64 network_id = 2;
+  optional uint64 buffer_id = 3;
+  optional uint64 message_id = 4;
+  optional uint64 message_time = 5;
+
+  repeated NetworkListT network_list = 6;
+  //optional ConnectedT connected = 7;
+  optional DisconnectedT disconnected = 8;
+  repeated BufferListT buffer_list = 9;
+  optional NewBufferT new_buffer = 10;
+  optional InformationT information = 11;
+}
+
+message NetworkListT {
+  required uint64 id = 1;
+}
+
+message DisconnectedT {
+  required string reason = 1;
+}
+
+message BufferRole {
+  enum Type {
+    Status = 1;
+    Channel = 2;
+    Query = 3;
+  }
+  required Type buffer_type = 1;
+  required string name = 2;
+}
+
+message BufferListT {
+  required uint64 id = 1;
+  required BufferRole role = 2;
+}
+
+message NewBufferT {
+  required uint64 id = 1;
+  required BufferRole role = 2;
+}
+
+message InformationT {
+  required string msg = 1;
+}
