@@ -47,7 +47,7 @@ def clear(screen, x, y, w, h):
     for yy in range(0, h):
         screen.addstr(y+yy,x,' '*w, 0)
 
-class panel:
+class Panel:
     def __init__(self):
         self._children = []
         self._layout = ''
@@ -67,21 +67,21 @@ class panel:
         elif self._id == panel_id:
             self._renderFn = func
 
-    def render(self, screen):
+    def render(self, screen, widget_context):
         # Update child status
         self._doLayout()
         if len(self._children) == 0:
             if self._w <= 0 or self._h <= 0:
                 return
             try:
-                self._renderFn(screen,self._id,self._x,self._y,self._w,self._h)
+                self._renderFn(screen, widget_context, self._id, self._x, self._y, self._w, self._h)
             except curses.error: pass
             except UnicodeEncodeError: pass
             except UnicodeDecodeError: pass
         else:
             # Recursively redraw.
             for child in self._children:
-                child.render(screen);
+                child.render(screen, widget_context)
 
     def layout(self, data):
         if not isinstance(data, str):
@@ -137,12 +137,7 @@ class panel:
 
         parts = splitparts(rest, commas)
 
-        childcount = len(parts)
-
-        while len(self._children) < childcount:
-            self._children.append(panel())
-        while len(self._children) > childcount:
-            self._children.pop()
+        self._children = [Panel() for _ in parts]
 
         for i in range(len(self._children)):
             self._children[i].layout(parts[i])
@@ -211,33 +206,134 @@ class panel:
                 if position > self._y+maxwidth:
                     c._h = maxwidth - c._y
 
-class canvas:
 
-    def __init__(self, event, mutex):
-        self._root = panel()
+class WidgetContext:
+
+    def __init__(self):
+        self.widgets = dict()
+        self.focus = ''
+        self.cursor = None
+
+    def clear(self):
+        self.widgets = dict()
+        self.focus = ''
+        self.cursor = None
+
+    def render_text_input(self, name, screen, x, y, w, h, focus_order):
+
+        if not name in self.widgets:
+            self.widgets[name] = {'value': '', 'cursor': 0}
+
+        widget = self.widgets[name]
+        widget['focus_order'] = focus_order
+
+        screen.addstr(y, x, ' ' * (w-1), 0)
+        screen.addstr(y, x, widget['value'][:w-1], 0)
+
+        if name == self.focus:
+            self.cursor = (x + widget['cursor'], y)
+
+    def get_text(self, name):
+        if not name in self.widgets:
+            return ''
+
+        return self.widgets[name]['value']
+
+    def set_text_default_value(self, name, value):
+        if not name in self.widgets:
+            self.widgets[name] = {'value': value, 'cursor': 0}
+
+    def set_focus(self, name=None):
+        if name is not None:
+            self.focus = name
+        elif self.focus == '' or self.focus not in self.widgets:
+            # find widget to focus on
+            if len(self.widgets) == 0:
+                return
+            self.focus = list(self.widgets.keys())[0]
+
+    def on_navigate(self, event):
+
+        if event == curses.KEY_UP or event == curses.KEY_DOWN:
+
+            if self.focus not in self.widgets:
+                return
+
+            # Scroll thru widgets that have focus order defined
+            orders = sorted([v['focus_order'] for k, v in self.widgets.items() if 'focus_order' in v])
+            idx = orders.index(self.widgets[self.focus]['focus_order'])
+
+            idx += 1 if event == curses.KEY_DOWN else -1
+            idx %= len(orders)
+
+            self.focus = [k for k, v in self.widgets.items() if v['focus_order'] == orders[idx]][0]
+            return
+
+        if self.focus not in self.widgets:
+            return
+        w = self.widgets[self.focus]
+
+        if event == curses.KEY_LEFT:
+            w['cursor'] = max(0, w['cursor']-1)
+        elif event == curses.KEY_RIGHT:
+            w['cursor'] = min(len(w['value']), w['cursor']+1)
+        elif event == curses.KEY_HOME:
+            w['cursor'] = 0
+        elif event == curses.KEY_END:
+            w['cursor'] = len(w['value'])
+        elif event == curses.KEY_BACKSPACE or event == 8 or event == 127:
+
+            cur = w['cursor']
+            w['value'] = w['value'][:max(0, cur-1)]+w['value'][cur:]
+            w['cursor'] = max(0, w['cursor']-1)
+
+    def on_character(self, text):
+
+        self.set_focus()
+        if self.focus not in self.widgets:
+            return
+        w = self.widgets[self.focus]
+
+        cur = w['cursor']
+        w['value'] = w['value'][:cur] + text + w['value'][cur:]
+        w['cursor'] += len(text)
+
+    def on_meta(self, event):
+        pass
+
+    def get_cursor(self):
+        return self.cursor
+
+
+class Canvas:
+
+    def __init__(self, event, mutex, callbacks):
+        self._root = Panel()
         self._event = event
         self._mutex = mutex
         self._halt = False
 
-        self._onSubmit = None # function callback to be called when the user presses enter
-        self._onMeta = None # function callback for meta-characters
-        self._inbuffer = bytearray() # user-written text, raw. When conversion to utf8 succeeds, dump to self._input
-        self._input = '' # user-written text, utf8
-        self._cursorPos = 0 # position of cursor in self._input
+        self._inbuffer = bytearray() # user-written text, raw. When conversion to utf8 succeeds, push upstream
 
         self._cursorXY = (0,0)
         self._screen = None
+        self._widget_context = WidgetContext()
+        self._callbacks = callbacks
 
     def refresh(self):
 
         with self._mutex:
-            if self._screen == None:
+            if self._screen is None:
                 return
 
             size = self._screen.getmaxyx()
-            self._root.setDimensions(0,0,size[1],size[0])
-            self._root.render(self._screen)
-            self._screen.move(self._cursorXY[1], self._cursorXY[0])
+            self._root.setDimensions(0, 0, size[1], size[0])
+            self._widget_context.set_focus()
+            self._root.render(self._screen, self._widget_context)
+            cursor = self._widget_context.get_cursor()
+            if cursor is None:
+                cursor = (0,0)
+            self._screen.move(cursor[1], cursor[0])
             self._screen.refresh()
 
     def _run(self, screen):
@@ -277,59 +373,54 @@ class canvas:
                     if event == 27: #Escape!
                         escape = True
                     elif escape:
-                        if self._onMeta != None:
-                            self._onMeta(event)
+                        if 'meta' in self._callbacks:
+                            self._callbacks['meta'](event)
                         escape = False
                     elif event == curses.KEY_RESIZE:
                         # on resize we clear the whole screen
                         screen.clear()
-                    elif event == curses.KEY_LEFT:
-                        self._cursorPos = max(0, self._cursorPos-1)
-                    elif event == curses.KEY_RIGHT:
-                        self._cursorPos = min(len(self._input), self._cursorPos+1)
-                    elif event == curses.KEY_BACKSPACE or event == 8 or event == 127: # backspace
-                        s = self._input
-                        p = self._cursorPos
-                        self._input = s[:max(0,p-1)] + s[p:]
-                        self._cursorPos = max(0, self._cursorPos-1)
-                    elif event == curses.KEY_DC: # delete-key
-                        s = self._input
-                        p = self._cursorPos
-                        self._input = s[:max(0,p)] + s[p+1:]
-                    elif event == curses.KEY_HOME:
-                        self._cursorPos = 0
-                    elif event == curses.KEY_END:
-                        self._cursorPos = len(self._input)
-                    elif event == curses.KEY_ENTER or event == 13: #newline
-                        self._cursorPos = 0
-                        if len(self._input) > 0 and self._onSubmit != None:
-                            self._onSubmit(self._input)
-                        self._input = ''
+                    elif event in [
+                        curses.KEY_LEFT,
+                        curses.KEY_RIGHT,
+                        curses.KEY_UP,
+                        curses.KEY_DOWN,
+                        curses.KEY_HOME,
+                        curses.KEY_END,
+                        curses.KEY_ENTER,
+                        13, # newline
+                        curses.KEY_BACKSPACE,
+                        8,  # backspace?
+                        127,# more backspaces?
+                        curses.KEY_DC # delete-key
+                    ]:
+                        self._widget_context.on_navigate(event)
+                        if 'navigate' in self._callbacks:
+                            self._callbacks['navigate'](event)
                     elif event == 10: # linefeed
                         pass
                     elif event > 0 and event < 256:
-                        p = self._cursorPos
                         self._inbuffer.append(event)
                         try:
                             buf = str(self._inbuffer, 'utf-8')
-                            self._input = self._input[:p] + buf + self._input[p:]
-                            self._cursorPos += 1
+                            self._widget_context.on_character(buf)
+                            if 'character' in self._callbacks:
+                                self._callbacks['character'](buf)
                             self._inbuffer = bytearray()
                         except UnicodeDecodeError: pass
-
                     if event != -1:
                         self.refresh()
         except KeyboardInterrupt:
             return
 
     def layout(self, string):
+        self._widget_context = WidgetContext()
         self._root.layout(string)
 
     def renderFn(self, panel_id, fn):
         # wrap the given function inside a mutex lock:
-        def func(screen, panel_id, x, y, w, h):
+        def func(screen, widget_context, panel_id, x, y, w, h):
             with self._mutex:
-                fn(screen, panel_id, x, y, w, h)
+                fn(screen, widget_context, panel_id, x, y, w, h)
         self._root.renderFn(panel_id, func)
 
     def run(self):
@@ -337,21 +428,3 @@ class canvas:
 
     def stop(self):
         self._halt = True
-
-    def getInput(self):
-        return self._input
-
-    # get cursor position (index in a line)
-    def getCursor(self):
-        return self._cursorPos
-    
-    # set cursor position (screen coordinates)
-    def setCursor(self, x, y):
-        self._cursorXY = (x,y)
-
-    def submitFn(self, fn):
-        self._onSubmit = fn
-
-    def metaFn(self, fn):
-        self._onMeta = fn
-

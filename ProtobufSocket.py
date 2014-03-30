@@ -183,8 +183,12 @@ class ProtobufSocket(asyncore.dispatcher):
         packet.network_id = network_id
 
         def handle_response(packet):
-            if packet.packet.type == proto.RemoteMessage.NetworkConfiguration:
-                cb(packet.network_configuration)
+            if packet.packet_type == proto.RemoteMessage.NetworkConfiguration:
+
+                if packet.HasField('network_configuration'):
+                    cb(packet.network_id, packet.network_configuration)
+                else:
+                    cb(packet.network_id, False)
             else:
                 self.logger('Unknown reply to GetNetworkConfiguration: '+str(packet))
 

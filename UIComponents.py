@@ -8,10 +8,13 @@ class Window:
     def __init__(self, name):
         self.name = name
 
-    def render(self, screen, x, y, w, h):
+    def get_layout(self):
+        return 'status'
+
+    def render(self, screen, widget_context, x, y, w, h):
         UIEngine.nullRender(screen, self.name, x, y, w, h)
 
-    def render_tab(self, screen, x, y, w, h, selected):
+    def render_tab(self, screen, widget_context, x, y, w, h, selected):
 
         if selected:
             attr = curses.color_pair(1) | curses.A_UNDERLINE
@@ -28,7 +31,7 @@ class TextWindow(Window):
     def push_message(self, msg):
         self.lines += re.split('\n', msg)
 
-    def render(self,screen,x,y,w,h):
+    def render(self, screen, widget_context, x, y, w, h):
         # Clear..
         for yy in range(y,y+h):
             screen.addstr(yy,x,' '*w)
@@ -61,46 +64,101 @@ class TextWindow(Window):
             pos -= linecount
 
 
+class Text:
+    def __init__(self, text):
+        self.text = text
+
+    def render(self, screen, widget_context, x, y, w, h):
+        screen.addstr(y, x, self.text[:w], 0)
+        return len(self.text), 1
+
+class TextInput:
+    def __init__(self, name, focus):
+        self.name = name
+        self.focus = focus
+
+    def render(self, screen, widget_context, x, y, w, h):
+        widget_context.render_text_input(self.name, screen, x, y, w, h, self.focus)
+        return len(widget_context.get_text(self.name)), 1
+
+class Spacing:
+    def __init__(self, count):
+        self.count = count
+
+    def render(self, screen, widget_context, x, y, w, h):
+        return self.count, self.count
+
+class Horizontal:
+    def __init__(self, items):
+        self.items = items
+
+    def render(self, screen, widget_context, x, y, w, h):
+        step = [0, 0]
+        minh = 0
+        for item in self.items:
+            size = item.render(screen, widget_context, x+step[0], y+step[1], w-step[0], h-step[1])
+            step[0] += min(size[0], w-step[0])
+            minh = max(minh, size[1])
+        return w, minh
+
+class Vertical:
+    def __init__(self, items):
+        self.items = items
+
+    def render(self, screen, widget_context, x, y, w, h):
+        step = [0, 0]
+        minw = 0
+        for item in self.items:
+            size = item.render(screen, widget_context, x+step[0], y+step[1], w-step[0], h-step[1])
+            step[1] += min(size[1], h-step[1])
+            minw = max(minw, size[0])
+        return minw, h
+
 class NetworkWindow(Window):
 
     def __init__(self, network):
         Window.__init__(self, 'Network: ' + str(network.state))
         self.network = network
 
-    def render(self,screen,x,y,w,h):
+    def get_layout(self):
+        return 'network'
+
+    def render(self, screen, widget_context, x, y, w, h):
 
         UIEngine.clear(screen, x, y, w, h)
 
-        lines = ['']
+        items = []
 
         net = self.network
 
-        if net.state == IRCState.Network.STATE_CONNECTED:
-            lines.append('Status: Connected')
-        elif net.state == IRCState.Network.STATE_CONNECTING:
-            lines.append('Status: Connecting')
-        elif net.state == IRCState.Network.STATE_DISCONNECTED:
-            lines.append('Status: Disconnected')
+        items.append(Spacing(1))
 
-        lines += ['']
+        if net.state == IRCState.Network.STATE_CONNECTED:
+            items.append(Text('Status: Connected'))
+        elif net.state == IRCState.Network.STATE_CONNECTING:
+            items.append(Text('Status: Connecting'))
+        elif net.state == IRCState.Network.STATE_DISCONNECTED:
+            items.append(Text('Status: Disconnected'))
+
+        items.append(Spacing(1))
 
         config = net.get_configuration()
-        if config is not None:
-            lines += ['Server: ' + config.server]
-            lines += ['Nickname: ' + config.nickname]
+        if config is None:
+            items.append(Text('Waiting for network configuration...'))
         else:
-            lines += ['Waiting for network configuration...']
 
-        lines += ['']
+            if config is False:
+                items.append(Text('The network is *not* configured'))
+            else:
+                widget_context.set_text_default_value('config_server', config.server)
+                widget_context.set_text_default_value('config_nickname', config.nickname)
 
+            items.append(Horizontal([Text('Server   : '), TextInput('config_server', focus=1)]))
+            items.append(Horizontal([Text('Nickname : '), TextInput('config_nickname', focus=2)]))
 
+        items.append(Spacing(1))
 
-        for i in range(len(lines)):
-            if i >= h:
-                break
-
-            x_offset = 2
-            screen.addstr(y+i, x+x_offset, lines[i][:(w-x_offset)], 0)
+        Vertical(items).render(screen, widget_context, x, y, w, h)
 
 class BufferWindow(Window):
 
