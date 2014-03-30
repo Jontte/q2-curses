@@ -1,50 +1,10 @@
-from IRCState import IRCState
-import UIEngine
 import threading
-import math
 import curses
 import re
 
-class Window:
-    def __init__(self, name):
-        self.name = name
-        self.lines = []
-
-    def pushMessage(self, msg):
-        self.lines += re.split('\n', msg)
-
-    def render(self,screen,x,y,w,h):
-        # Clear..
-        for yy in range(y,y+h):
-            screen.addstr(yy,x,' '*w)
-
-        # Whether to draw an extra symbol to help distinquish long messages from each other:
-        drawBullet = True
-
-        if drawBullet:
-            x += 2
-            w -= 2
-            if w <= 0:
-                return
-        # Let's do some wrapping..
-        pos = y+h-1
-        for i in range(len(self.lines)):
-            idx = len(self.lines)-i-1
-
-            thisline = self.lines[idx]
-
-            linecount = int(math.ceil(float(len(thisline))/w))
-                
-            if pos-linecount < y:
-                break
-
-            if drawBullet:
-                screen.addch(y+pos-linecount,x-2, curses.ACS_DIAMOND)
-            for a in range(linecount):
-                screen.addstr(y+pos-linecount+a, x, thisline[:w].encode('utf-8'))
-                thisline = thisline[w:]
-            pos -= linecount
-
+from IRCState import IRCState
+import UIComponents
+import UIEngine
 
 class IRCUI:
     def __init__(self):
@@ -80,7 +40,7 @@ ver(
         self.networks = []
 
         # setup windows
-        self.status_window = Window('status')
+        self.status_window = UIComponents.TextWindow('status')
         self.windows = [self.status_window]
         self.current_window_index = 0
         self.input_title = u'> '
@@ -94,19 +54,19 @@ ver(
         self.layout.stop()
         self.event.set()
 
+    def isRunning(self):
+        return self.thread.is_alive()
+
+    def refresh(self):
+        self.layout.refresh()
+
     def renderWinlist(self, screen, panel_id, x, y, w, h):
         for yy in range(len(self.windows)):
             if yy >= h:
                 break
-            name = self.windows[yy].name
-            title = (str(yy+1) + u' ' + name)[:w]
-            for xx in range(len(title)):
-                attr = 0
-                if yy == self.current_window_index:
-                    attr = curses.color_pair(1) | curses.A_UNDERLINE
-                else:
-                    attr = curses.color_pair(2)
-                screen.addstr(y+yy,x+xx,title[xx],attr)
+            screen.addstr(y+yy, x, str(yy+1))
+            if w-2 > 0:
+                self.windows[yy].render_tab(screen, x+2, y+yy, w-2, 1, yy == self.current_window_index)
 
     def renderChannel(self, screen, panel_id, x, y, w, h):
         self.windows[self.current_window_index].render(screen,x,y,w,h)
@@ -148,22 +108,15 @@ ver(
 
     def renderSplitter(self, screen, panel_id, x, y, w, h):
         screen.addstr(y,x,' '*w, curses.A_REVERSE)
-        
-    def isRunning(self):
-        return self.thread.is_alive()
-    
-    def refresh(self):
-#        self.event.set()
-        self.layout.refresh()
 
     def pushStatusMessage(self, msg):
         with self.mutex:
-            self.status_window.pushMessage(msg)
+            self.status_window.push_message(msg)
         self.refresh()
 
     def pushMessage(self, msg):
         with self.mutex:
-            self.windows[self.current_window_index].pushMessage(msg)
+            self.windows[self.current_window_index].push_message(msg)
         self.refresh()
 
     def handleMeta(self, char):
@@ -181,9 +134,15 @@ ver(
     def repopulate_windows(self):
 
         self.windows = [self.status_window]
+
         for network in self.networks:
+
+            bufs = network.buffer_list()
+
+            self.windows.append(UIComponents.NetworkWindow(network))
+
             for buffer in network.buffer_list():
-                self.windows.append(Window(str(network.id) + ': ' +buffer.name))
+                self.windows.append(UIComponents.BufferWindow(network, buffer))
 
     def on_submit(self, line):
 

@@ -8,30 +8,28 @@ message RemoteCommand {
     GetNetworkList = 100;
     /* Network */
     Connect = 200;
-    Register = 201;
     JoinChannel = 202;
     SendPrivmsg = 203;
     GetBufferList = 204;
+    Disconnect = 205;
+    GetNetworkConfiguration = 206;
+    SetNetworkConfiguration = 207;
   };
 
   required Type packet_type = 1;
 
   optional uint64 network_id = 2;
   optional uint64 buffer_id = 3;
+  optional uint64 tag = 4;
 
-  optional AttachSessionT attach_session = 4;
-  optional ConnectT connect = 5;
-  optional RegisterT register = 6;
+  optional AttachSessionT attach_session = 5;
   optional JoinChannelT join_channel = 7;
   optional SendPrivmsgT send_privmsg = 8;
+  optional SetNetworkConfigurationT set_network_configuration = 9;
 }
 
 message AttachSessionT {
   required uint64 session_id = 1;
-}
-
-message ConnectT {
-  required string address = 2;
 }
 
 message RegisterT {
@@ -47,9 +45,16 @@ message SendPrivmsgT {
   required string msg = 3;
 }
 
+message SetNetworkConfigurationT {
+  required string server = 1;
+  required string nickname = 2;
+}
+
 message RemoteMessage {
   enum Type {
     /* Remote control */
+    Error = 1;
+    Success = 2;
     /* Session */
     NetworkList = 100;
     /* Network */
@@ -57,8 +62,11 @@ message RemoteMessage {
     Disconnected = 202;
     BufferList = 203;
     NewBuffer = 204;
+    NetworkConfiguration = 205;
     /* Buffer */
-    Information = 205;
+    Information = 305;
+    Join = 306;
+    Privmsg = 307;
   };
 
   required Type packet_type = 1;
@@ -67,17 +75,27 @@ message RemoteMessage {
   optional uint64 buffer_id = 3;
   optional uint64 message_id = 4;
   optional uint64 message_time = 5;
+  optional uint64 tag = 6;
 
-  repeated NetworkListT network_list = 6;
-  //optional ConnectedT connected = 7;
+  repeated NetworkListT network_list = 7;
   optional DisconnectedT disconnected = 8;
   repeated BufferListT buffer_list = 9;
   optional NewBufferT new_buffer = 10;
   optional InformationT information = 11;
+  optional ErrorT error = 12;
+  optional JoinT join = 13;
+  optional PrivmsgT privmsg = 14;
+  optional NetworkConfigurationT network_configuration = 15;
 }
 
 message NetworkListT {
+  enum NetworkState {
+    NetworkDisconnected = 0;
+    NetworkConnecting = 1;
+    NetworkConnected = 2;
+  }
   required uint64 id = 1;
+  required NetworkState state = 2;
 }
 
 message DisconnectedT {
@@ -106,4 +124,22 @@ message NewBufferT {
 
 message InformationT {
   required string msg = 1;
+}
+
+message ErrorT {
+  required string msg = 1;
+}
+
+message JoinT {
+  required string who = 1;
+}
+
+message PrivmsgT {
+  required string who = 1;
+  required string msg = 2;
+}
+
+message NetworkConfigurationT {
+  required string server = 1;
+  required string nickname = 2;
 }

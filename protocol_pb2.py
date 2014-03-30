@@ -14,7 +14,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='protocol.proto',
   package='q2',
-  serialized_pb=b'\n\x0eprotocol.proto\x12\x02q2\"\xa4\x03\n\rRemoteCommand\x12+\n\x0bpacket_type\x18\x01 \x02(\x0e\x32\x16.q2.RemoteCommand.Type\x12\x12\n\nnetwork_id\x18\x02 \x01(\x04\x12\x11\n\tbuffer_id\x18\x03 \x01(\x04\x12*\n\x0e\x61ttach_session\x18\x04 \x01(\x0b\x32\x12.q2.AttachSessionT\x12\x1d\n\x07\x63onnect\x18\x05 \x01(\x0b\x32\x0c.q2.ConnectT\x12\x1f\n\x08register\x18\x06 \x01(\x0b\x32\r.q2.RegisterT\x12&\n\x0cjoin_channel\x18\x07 \x01(\x0b\x32\x10.q2.JoinChannelT\x12&\n\x0csend_privmsg\x18\x08 \x01(\x0b\x32\x10.q2.SendPrivmsgT\"\x82\x01\n\x04Type\x12\x11\n\rAttachSession\x10\x01\x12\x12\n\x0eGetNetworkList\x10\x64\x12\x0c\n\x07\x43onnect\x10\xc8\x01\x12\r\n\x08Register\x10\xc9\x01\x12\x10\n\x0bJoinChannel\x10\xca\x01\x12\x10\n\x0bSendPrivmsg\x10\xcb\x01\x12\x12\n\rGetBufferList\x10\xcc\x01\"$\n\x0e\x41ttachSessionT\x12\x12\n\nsession_id\x18\x01 \x02(\x04\"\x1b\n\x08\x43onnectT\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x02(\t\"\x1d\n\tRegisterT\x12\x10\n\x08nickname\x18\x02 \x02(\t\"\x1f\n\x0cJoinChannelT\x12\x0f\n\x07\x63hannel\x18\x02 \x02(\t\"+\n\x0cSendPrivmsgT\x12\x0e\n\x06target\x18\x02 \x02(\t\x12\x0b\n\x03msg\x18\x03 \x02(\t\"\xbe\x03\n\rRemoteMessage\x12+\n\x0bpacket_type\x18\x01 \x02(\x0e\x32\x16.q2.RemoteMessage.Type\x12\x12\n\nnetwork_id\x18\x02 \x01(\x04\x12\x11\n\tbuffer_id\x18\x03 \x01(\x04\x12\x12\n\nmessage_id\x18\x04 \x01(\x04\x12\x14\n\x0cmessage_time\x18\x05 \x01(\x04\x12&\n\x0cnetwork_list\x18\x06 \x03(\x0b\x32\x10.q2.NetworkListT\x12\'\n\x0c\x64isconnected\x18\x08 \x01(\x0b\x32\x11.q2.DisconnectedT\x12$\n\x0b\x62uffer_list\x18\t \x03(\x0b\x32\x0f.q2.BufferListT\x12\"\n\nnew_buffer\x18\n \x01(\x0b\x32\x0e.q2.NewBufferT\x12%\n\x0binformation\x18\x0b \x01(\x0b\x32\x10.q2.InformationT\"m\n\x04Type\x12\x0f\n\x0bNetworkList\x10\x64\x12\x0e\n\tConnected\x10\xc9\x01\x12\x11\n\x0c\x44isconnected\x10\xca\x01\x12\x0f\n\nBufferList\x10\xcb\x01\x12\x0e\n\tNewBuffer\x10\xcc\x01\x12\x10\n\x0bInformation\x10\xcd\x01\"\x1a\n\x0cNetworkListT\x12\n\n\x02id\x18\x01 \x02(\x04\"\x1f\n\rDisconnectedT\x12\x0e\n\x06reason\x18\x01 \x02(\t\"p\n\nBufferRole\x12(\n\x0b\x62uffer_type\x18\x01 \x02(\x0e\x32\x13.q2.BufferRole.Type\x12\x0c\n\x04name\x18\x02 \x02(\t\"*\n\x04Type\x12\n\n\x06Status\x10\x01\x12\x0b\n\x07\x43hannel\x10\x02\x12\t\n\x05Query\x10\x03\"7\n\x0b\x42ufferListT\x12\n\n\x02id\x18\x01 \x02(\x04\x12\x1c\n\x04role\x18\x02 \x02(\x0b\x32\x0e.q2.BufferRole\"6\n\nNewBufferT\x12\n\n\x02id\x18\x01 \x02(\x04\x12\x1c\n\x04role\x18\x02 \x02(\x0b\x32\x0e.q2.BufferRole\"\x1b\n\x0cInformationT\x12\x0b\n\x03msg\x18\x01 \x02(\t')
+  serialized_pb=b'\n\x0eprotocol.proto\x12\x02q2\"\xf0\x03\n\rRemoteCommand\x12+\n\x0bpacket_type\x18\x01 \x02(\x0e\x32\x16.q2.RemoteCommand.Type\x12\x12\n\nnetwork_id\x18\x02 \x01(\x04\x12\x11\n\tbuffer_id\x18\x03 \x01(\x04\x12\x0b\n\x03tag\x18\x04 \x01(\x04\x12*\n\x0e\x61ttach_session\x18\x05 \x01(\x0b\x32\x12.q2.AttachSessionT\x12&\n\x0cjoin_channel\x18\x07 \x01(\x0b\x32\x10.q2.JoinChannelT\x12&\n\x0csend_privmsg\x18\x08 \x01(\x0b\x32\x10.q2.SendPrivmsgT\x12?\n\x19set_network_configuration\x18\t \x01(\x0b\x32\x1c.q2.SetNetworkConfigurationT\"\xc0\x01\n\x04Type\x12\x11\n\rAttachSession\x10\x01\x12\x12\n\x0eGetNetworkList\x10\x64\x12\x0c\n\x07\x43onnect\x10\xc8\x01\x12\x10\n\x0bJoinChannel\x10\xca\x01\x12\x10\n\x0bSendPrivmsg\x10\xcb\x01\x12\x12\n\rGetBufferList\x10\xcc\x01\x12\x0f\n\nDisconnect\x10\xcd\x01\x12\x1c\n\x17GetNetworkConfiguration\x10\xce\x01\x12\x1c\n\x17SetNetworkConfiguration\x10\xcf\x01\"$\n\x0e\x41ttachSessionT\x12\x12\n\nsession_id\x18\x01 \x02(\x04\"\x1d\n\tRegisterT\x12\x10\n\x08nickname\x18\x02 \x02(\t\"\x1f\n\x0cJoinChannelT\x12\x0f\n\x07\x63hannel\x18\x02 \x02(\t\"+\n\x0cSendPrivmsgT\x12\x0e\n\x06target\x18\x02 \x02(\t\x12\x0b\n\x03msg\x18\x03 \x02(\t\"<\n\x18SetNetworkConfigurationT\x12\x0e\n\x06server\x18\x01 \x02(\t\x12\x10\n\x08nickname\x18\x02 \x02(\t\"\xa5\x05\n\rRemoteMessage\x12+\n\x0bpacket_type\x18\x01 \x02(\x0e\x32\x16.q2.RemoteMessage.Type\x12\x12\n\nnetwork_id\x18\x02 \x01(\x04\x12\x11\n\tbuffer_id\x18\x03 \x01(\x04\x12\x12\n\nmessage_id\x18\x04 \x01(\x04\x12\x14\n\x0cmessage_time\x18\x05 \x01(\x04\x12\x0b\n\x03tag\x18\x06 \x01(\x04\x12&\n\x0cnetwork_list\x18\x07 \x03(\x0b\x32\x10.q2.NetworkListT\x12\'\n\x0c\x64isconnected\x18\x08 \x01(\x0b\x32\x11.q2.DisconnectedT\x12$\n\x0b\x62uffer_list\x18\t \x03(\x0b\x32\x0f.q2.BufferListT\x12\"\n\nnew_buffer\x18\n \x01(\x0b\x32\x0e.q2.NewBufferT\x12%\n\x0binformation\x18\x0b \x01(\x0b\x32\x10.q2.InformationT\x12\x19\n\x05\x65rror\x18\x0c \x01(\x0b\x32\n.q2.ErrorT\x12\x17\n\x04join\x18\r \x01(\x0b\x32\t.q2.JoinT\x12\x1d\n\x07privmsg\x18\x0e \x01(\x0b\x32\x0c.q2.PrivmsgT\x12\x38\n\x15network_configuration\x18\x0f \x01(\x0b\x32\x19.q2.NetworkConfigurationT\"\xb9\x01\n\x04Type\x12\t\n\x05\x45rror\x10\x01\x12\x0b\n\x07Success\x10\x02\x12\x0f\n\x0bNetworkList\x10\x64\x12\x0e\n\tConnected\x10\xc9\x01\x12\x11\n\x0c\x44isconnected\x10\xca\x01\x12\x0f\n\nBufferList\x10\xcb\x01\x12\x0e\n\tNewBuffer\x10\xcc\x01\x12\x19\n\x14NetworkConfiguration\x10\xcd\x01\x12\x10\n\x0bInformation\x10\xb1\x02\x12\t\n\x04Join\x10\xb2\x02\x12\x0c\n\x07Privmsg\x10\xb3\x02\"\x9e\x01\n\x0cNetworkListT\x12\n\n\x02id\x18\x01 \x02(\x04\x12,\n\x05state\x18\x02 \x02(\x0e\x32\x1d.q2.NetworkListT.NetworkState\"T\n\x0cNetworkState\x12\x17\n\x13NetworkDisconnected\x10\x00\x12\x15\n\x11NetworkConnecting\x10\x01\x12\x14\n\x10NetworkConnected\x10\x02\"\x1f\n\rDisconnectedT\x12\x0e\n\x06reason\x18\x01 \x02(\t\"p\n\nBufferRole\x12(\n\x0b\x62uffer_type\x18\x01 \x02(\x0e\x32\x13.q2.BufferRole.Type\x12\x0c\n\x04name\x18\x02 \x02(\t\"*\n\x04Type\x12\n\n\x06Status\x10\x01\x12\x0b\n\x07\x43hannel\x10\x02\x12\t\n\x05Query\x10\x03\"7\n\x0b\x42ufferListT\x12\n\n\x02id\x18\x01 \x02(\x04\x12\x1c\n\x04role\x18\x02 \x02(\x0b\x32\x0e.q2.BufferRole\"6\n\nNewBufferT\x12\n\n\x02id\x18\x01 \x02(\x04\x12\x1c\n\x04role\x18\x02 \x02(\x0b\x32\x0e.q2.BufferRole\"\x1b\n\x0cInformationT\x12\x0b\n\x03msg\x18\x01 \x02(\t\"\x15\n\x06\x45rrorT\x12\x0b\n\x03msg\x18\x01 \x02(\t\"\x14\n\x05JoinT\x12\x0b\n\x03who\x18\x01 \x02(\t\"$\n\x08PrivmsgT\x12\x0b\n\x03who\x18\x01 \x02(\t\x12\x0b\n\x03msg\x18\x02 \x02(\t\"9\n\x15NetworkConfigurationT\x12\x0e\n\x06server\x18\x01 \x02(\t\x12\x10\n\x08nickname\x18\x02 \x02(\t')
 
 
 
@@ -37,26 +37,34 @@ _REMOTECOMMAND_TYPE = _descriptor.EnumDescriptor(
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='Register', index=3, number=201,
+      name='JoinChannel', index=3, number=202,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='JoinChannel', index=4, number=202,
+      name='SendPrivmsg', index=4, number=203,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='SendPrivmsg', index=5, number=203,
+      name='GetBufferList', index=5, number=204,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='GetBufferList', index=6, number=204,
+      name='Disconnect', index=6, number=205,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='GetNetworkConfiguration', index=7, number=206,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='SetNetworkConfiguration', index=8, number=207,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=313,
-  serialized_end=443,
+  serialized_start=327,
+  serialized_end=519,
 )
 
 _REMOTEMESSAGE_TYPE = _descriptor.EnumDescriptor(
@@ -66,34 +74,79 @@ _REMOTEMESSAGE_TYPE = _descriptor.EnumDescriptor(
   file=DESCRIPTOR,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='NetworkList', index=0, number=100,
+      name='Error', index=0, number=1,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='Connected', index=1, number=201,
+      name='Success', index=1, number=2,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='Disconnected', index=2, number=202,
+      name='NetworkList', index=2, number=100,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='BufferList', index=3, number=203,
+      name='Connected', index=3, number=201,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='NewBuffer', index=4, number=204,
+      name='Disconnected', index=4, number=202,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='Information', index=5, number=205,
+      name='BufferList', index=5, number=203,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NewBuffer', index=6, number=204,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NetworkConfiguration', index=7, number=205,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='Information', index=8, number=305,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='Join', index=9, number=306,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='Privmsg', index=10, number=307,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=959,
-  serialized_end=1068,
+  serialized_start=1223,
+  serialized_end=1408,
+)
+
+_NETWORKLISTT_NETWORKSTATE = _descriptor.EnumDescriptor(
+  name='NetworkState',
+  full_name='q2.NetworkListT.NetworkState',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='NetworkDisconnected', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NetworkConnecting', index=1, number=1,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='NetworkConnected', index=2, number=2,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=1485,
+  serialized_end=1569,
 )
 
 _BUFFERROLE_TYPE = _descriptor.EnumDescriptor(
@@ -117,8 +170,8 @@ _BUFFERROLE_TYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1201,
-  serialized_end=1243,
+  serialized_start=1674,
+  serialized_end=1716,
 )
 
 
@@ -151,36 +204,36 @@ _REMOTECOMMAND = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='attach_session', full_name='q2.RemoteCommand.attach_session', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='tag', full_name='q2.RemoteCommand.tag', index=3,
+      number=4, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='connect', full_name='q2.RemoteCommand.connect', index=4,
+      name='attach_session', full_name='q2.RemoteCommand.attach_session', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='register', full_name='q2.RemoteCommand.register', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='join_channel', full_name='q2.RemoteCommand.join_channel', index=6,
+      name='join_channel', full_name='q2.RemoteCommand.join_channel', index=5,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='send_privmsg', full_name='q2.RemoteCommand.send_privmsg', index=7,
+      name='send_privmsg', full_name='q2.RemoteCommand.send_privmsg', index=6,
       number=8, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='set_network_configuration', full_name='q2.RemoteCommand.set_network_configuration', index=7,
+      number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -196,7 +249,7 @@ _REMOTECOMMAND = _descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=23,
-  serialized_end=443,
+  serialized_end=519,
 )
 
 
@@ -223,36 +276,8 @@ _ATTACHSESSIONT = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=445,
-  serialized_end=481,
-)
-
-
-_CONNECTT = _descriptor.Descriptor(
-  name='ConnectT',
-  full_name='q2.ConnectT',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='address', full_name='q2.ConnectT.address', index=0,
-      number=2, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=483,
-  serialized_end=510,
+  serialized_start=521,
+  serialized_end=557,
 )
 
 
@@ -279,8 +304,8 @@ _REGISTERT = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=512,
-  serialized_end=541,
+  serialized_start=559,
+  serialized_end=588,
 )
 
 
@@ -307,8 +332,8 @@ _JOINCHANNELT = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=543,
-  serialized_end=574,
+  serialized_start=590,
+  serialized_end=621,
 )
 
 
@@ -342,8 +367,43 @@ _SENDPRIVMSGT = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=576,
-  serialized_end=619,
+  serialized_start=623,
+  serialized_end=666,
+)
+
+
+_SETNETWORKCONFIGURATIONT = _descriptor.Descriptor(
+  name='SetNetworkConfigurationT',
+  full_name='q2.SetNetworkConfigurationT',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='server', full_name='q2.SetNetworkConfigurationT.server', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='nickname', full_name='q2.SetNetworkConfigurationT.nickname', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=668,
+  serialized_end=728,
 )
 
 
@@ -357,7 +417,7 @@ _REMOTEMESSAGE = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='packet_type', full_name='q2.RemoteMessage.packet_type', index=0,
       number=1, type=14, cpp_type=8, label=2,
-      has_default_value=False, default_value=100,
+      has_default_value=False, default_value=1,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -390,36 +450,71 @@ _REMOTEMESSAGE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='network_list', full_name='q2.RemoteMessage.network_list', index=5,
-      number=6, type=11, cpp_type=10, label=3,
+      name='tag', full_name='q2.RemoteMessage.tag', index=5,
+      number=6, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='network_list', full_name='q2.RemoteMessage.network_list', index=6,
+      number=7, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='disconnected', full_name='q2.RemoteMessage.disconnected', index=6,
+      name='disconnected', full_name='q2.RemoteMessage.disconnected', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='buffer_list', full_name='q2.RemoteMessage.buffer_list', index=7,
+      name='buffer_list', full_name='q2.RemoteMessage.buffer_list', index=8,
       number=9, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='new_buffer', full_name='q2.RemoteMessage.new_buffer', index=8,
+      name='new_buffer', full_name='q2.RemoteMessage.new_buffer', index=9,
       number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='information', full_name='q2.RemoteMessage.information', index=9,
+      name='information', full_name='q2.RemoteMessage.information', index=10,
       number=11, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='error', full_name='q2.RemoteMessage.error', index=11,
+      number=12, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='join', full_name='q2.RemoteMessage.join', index=12,
+      number=13, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='privmsg', full_name='q2.RemoteMessage.privmsg', index=13,
+      number=14, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='network_configuration', full_name='q2.RemoteMessage.network_configuration', index=14,
+      number=15, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -434,8 +529,8 @@ _REMOTEMESSAGE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=622,
-  serialized_end=1068,
+  serialized_start=731,
+  serialized_end=1408,
 )
 
 
@@ -453,17 +548,25 @@ _NETWORKLISTT = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='state', full_name='q2.NetworkListT.state', index=1,
+      number=2, type=14, cpp_type=8, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
+    _NETWORKLISTT_NETWORKSTATE,
   ],
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1070,
-  serialized_end=1096,
+  serialized_start=1411,
+  serialized_end=1569,
 )
 
 
@@ -490,8 +593,8 @@ _DISCONNECTEDT = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1098,
-  serialized_end=1129,
+  serialized_start=1571,
+  serialized_end=1602,
 )
 
 
@@ -526,8 +629,8 @@ _BUFFERROLE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1131,
-  serialized_end=1243,
+  serialized_start=1604,
+  serialized_end=1716,
 )
 
 
@@ -561,8 +664,8 @@ _BUFFERLISTT = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1245,
-  serialized_end=1300,
+  serialized_start=1718,
+  serialized_end=1773,
 )
 
 
@@ -596,8 +699,8 @@ _NEWBUFFERT = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1302,
-  serialized_end=1356,
+  serialized_start=1775,
+  serialized_end=1829,
 )
 
 
@@ -624,16 +727,141 @@ _INFORMATIONT = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1358,
-  serialized_end=1385,
+  serialized_start=1831,
+  serialized_end=1858,
+)
+
+
+_ERRORT = _descriptor.Descriptor(
+  name='ErrorT',
+  full_name='q2.ErrorT',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='msg', full_name='q2.ErrorT.msg', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=1860,
+  serialized_end=1881,
+)
+
+
+_JOINT = _descriptor.Descriptor(
+  name='JoinT',
+  full_name='q2.JoinT',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='who', full_name='q2.JoinT.who', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=1883,
+  serialized_end=1903,
+)
+
+
+_PRIVMSGT = _descriptor.Descriptor(
+  name='PrivmsgT',
+  full_name='q2.PrivmsgT',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='who', full_name='q2.PrivmsgT.who', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='msg', full_name='q2.PrivmsgT.msg', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=1905,
+  serialized_end=1941,
+)
+
+
+_NETWORKCONFIGURATIONT = _descriptor.Descriptor(
+  name='NetworkConfigurationT',
+  full_name='q2.NetworkConfigurationT',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='server', full_name='q2.NetworkConfigurationT.server', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='nickname', full_name='q2.NetworkConfigurationT.nickname', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=1943,
+  serialized_end=2000,
 )
 
 _REMOTECOMMAND.fields_by_name['packet_type'].enum_type = _REMOTECOMMAND_TYPE
 _REMOTECOMMAND.fields_by_name['attach_session'].message_type = _ATTACHSESSIONT
-_REMOTECOMMAND.fields_by_name['connect'].message_type = _CONNECTT
-_REMOTECOMMAND.fields_by_name['register'].message_type = _REGISTERT
 _REMOTECOMMAND.fields_by_name['join_channel'].message_type = _JOINCHANNELT
 _REMOTECOMMAND.fields_by_name['send_privmsg'].message_type = _SENDPRIVMSGT
+_REMOTECOMMAND.fields_by_name['set_network_configuration'].message_type = _SETNETWORKCONFIGURATIONT
 _REMOTECOMMAND_TYPE.containing_type = _REMOTECOMMAND;
 _REMOTEMESSAGE.fields_by_name['packet_type'].enum_type = _REMOTEMESSAGE_TYPE
 _REMOTEMESSAGE.fields_by_name['network_list'].message_type = _NETWORKLISTT
@@ -641,17 +869,23 @@ _REMOTEMESSAGE.fields_by_name['disconnected'].message_type = _DISCONNECTEDT
 _REMOTEMESSAGE.fields_by_name['buffer_list'].message_type = _BUFFERLISTT
 _REMOTEMESSAGE.fields_by_name['new_buffer'].message_type = _NEWBUFFERT
 _REMOTEMESSAGE.fields_by_name['information'].message_type = _INFORMATIONT
+_REMOTEMESSAGE.fields_by_name['error'].message_type = _ERRORT
+_REMOTEMESSAGE.fields_by_name['join'].message_type = _JOINT
+_REMOTEMESSAGE.fields_by_name['privmsg'].message_type = _PRIVMSGT
+_REMOTEMESSAGE.fields_by_name['network_configuration'].message_type = _NETWORKCONFIGURATIONT
 _REMOTEMESSAGE_TYPE.containing_type = _REMOTEMESSAGE;
+_NETWORKLISTT.fields_by_name['state'].enum_type = _NETWORKLISTT_NETWORKSTATE
+_NETWORKLISTT_NETWORKSTATE.containing_type = _NETWORKLISTT;
 _BUFFERROLE.fields_by_name['buffer_type'].enum_type = _BUFFERROLE_TYPE
 _BUFFERROLE_TYPE.containing_type = _BUFFERROLE;
 _BUFFERLISTT.fields_by_name['role'].message_type = _BUFFERROLE
 _NEWBUFFERT.fields_by_name['role'].message_type = _BUFFERROLE
 DESCRIPTOR.message_types_by_name['RemoteCommand'] = _REMOTECOMMAND
 DESCRIPTOR.message_types_by_name['AttachSessionT'] = _ATTACHSESSIONT
-DESCRIPTOR.message_types_by_name['ConnectT'] = _CONNECTT
 DESCRIPTOR.message_types_by_name['RegisterT'] = _REGISTERT
 DESCRIPTOR.message_types_by_name['JoinChannelT'] = _JOINCHANNELT
 DESCRIPTOR.message_types_by_name['SendPrivmsgT'] = _SENDPRIVMSGT
+DESCRIPTOR.message_types_by_name['SetNetworkConfigurationT'] = _SETNETWORKCONFIGURATIONT
 DESCRIPTOR.message_types_by_name['RemoteMessage'] = _REMOTEMESSAGE
 DESCRIPTOR.message_types_by_name['NetworkListT'] = _NETWORKLISTT
 DESCRIPTOR.message_types_by_name['DisconnectedT'] = _DISCONNECTEDT
@@ -659,6 +893,10 @@ DESCRIPTOR.message_types_by_name['BufferRole'] = _BUFFERROLE
 DESCRIPTOR.message_types_by_name['BufferListT'] = _BUFFERLISTT
 DESCRIPTOR.message_types_by_name['NewBufferT'] = _NEWBUFFERT
 DESCRIPTOR.message_types_by_name['InformationT'] = _INFORMATIONT
+DESCRIPTOR.message_types_by_name['ErrorT'] = _ERRORT
+DESCRIPTOR.message_types_by_name['JoinT'] = _JOINT
+DESCRIPTOR.message_types_by_name['PrivmsgT'] = _PRIVMSGT
+DESCRIPTOR.message_types_by_name['NetworkConfigurationT'] = _NETWORKCONFIGURATIONT
 
 @_metaclass.decorator
 class RemoteCommand(_message.Message):
@@ -673,13 +911,6 @@ class AttachSessionT(_message.Message):
   DESCRIPTOR = _ATTACHSESSIONT
 
   # @@protoc_insertion_point(class_scope:q2.AttachSessionT)
-
-@_metaclass.decorator
-class ConnectT(_message.Message):
-  __metaclass__ = _reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _CONNECTT
-
-  # @@protoc_insertion_point(class_scope:q2.ConnectT)
 
 @_metaclass.decorator
 class RegisterT(_message.Message):
@@ -701,6 +932,13 @@ class SendPrivmsgT(_message.Message):
   DESCRIPTOR = _SENDPRIVMSGT
 
   # @@protoc_insertion_point(class_scope:q2.SendPrivmsgT)
+
+@_metaclass.decorator
+class SetNetworkConfigurationT(_message.Message):
+  __metaclass__ = _reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _SETNETWORKCONFIGURATIONT
+
+  # @@protoc_insertion_point(class_scope:q2.SetNetworkConfigurationT)
 
 @_metaclass.decorator
 class RemoteMessage(_message.Message):
@@ -750,6 +988,34 @@ class InformationT(_message.Message):
   DESCRIPTOR = _INFORMATIONT
 
   # @@protoc_insertion_point(class_scope:q2.InformationT)
+
+@_metaclass.decorator
+class ErrorT(_message.Message):
+  __metaclass__ = _reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _ERRORT
+
+  # @@protoc_insertion_point(class_scope:q2.ErrorT)
+
+@_metaclass.decorator
+class JoinT(_message.Message):
+  __metaclass__ = _reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _JOINT
+
+  # @@protoc_insertion_point(class_scope:q2.JoinT)
+
+@_metaclass.decorator
+class PrivmsgT(_message.Message):
+  __metaclass__ = _reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _PRIVMSGT
+
+  # @@protoc_insertion_point(class_scope:q2.PrivmsgT)
+
+@_metaclass.decorator
+class NetworkConfigurationT(_message.Message):
+  __metaclass__ = _reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _NETWORKCONFIGURATIONT
+
+  # @@protoc_insertion_point(class_scope:q2.NetworkConfigurationT)
 
 
 # @@protoc_insertion_point(module_scope)

@@ -43,6 +43,9 @@ def nullRender(screen, panel_id, x, y, w, h):
         screen.addch(y+i,x, '|', attr)
         screen.addch(y+i,x+w-1, '|', attr)
 
+def clear(screen, x, y, w, h):
+    for yy in range(0, h):
+        screen.addstr(y+yy,x,' '*w, 0)
 
 class panel:
     def __init__(self):
